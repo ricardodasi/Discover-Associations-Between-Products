@@ -1,0 +1,71 @@
+ProductType,ProductNumber,Brand Name,Profit margin
+PC,102,Dell,0.25
+Display,157,Epson,0.25
+Laptop,105,Asus,0.09
+PC,101,Sony,0.15
+Display,158,Dell,0.16
+Laptop,143,Sony,0.15
+Software,120,Asus,0.09
+PC,142,iPower,0.09
+Tablet,185,Asus,0.13
+Tablet,188,Samsung,0.2
+Smartphone,197,Nokia,0.1
+Tablet,189,Lenovo,0.18
+Laptop,104,Acer,0.08
+PC,103,HP,0.08
+Printer,127,HP,0.12
+Printer,168,HP,0.09
+Printer,169,Canon,0.11
+Accessories,107,Asus,0.09
+Netbook,177,Samsung,0.1
+Display,156,ViewSonic,0.2
+Netbook,182,Toshiba,0.12
+Game Console,200,Microsoft,0.12
+Printer,128,Brother,0.12
+Smartphone,191,Samsung,0.14
+Smartphone,190,Apple,0.1
+Display,126,ViewSonic,0.08
+Accessories,118,Asus,0.09
+Printer,165,HP,0.16
+Printer,164,Xerox,0.18
+Display,159,LG,0.17
+Printer,163,Lexmark,0.18
+Printer,167,HP,0.15
+Printer,162,Samsung,0.14
+Software,121,Asus,0.09
+Printer,166,Dell,0.2
+Printer,160,Brother,0.1
+Game Console,198,Nintendo,0.18
+Printer,161,Brother,0.12
+Accessories,149,Sony,0.15
+Software,122,Asus,0.09
+Accessories,109,Asus,0.09
+Accessories,106,Asus,0.09
+Accessories,151,Sony,0.15
+Smartphone,192,HTC,0.17
+Printer Supplies,129,V4INK,0.35
+Accessories,155,Sony,0.15
+Accessories,108,Asus,0.09
+Accessories,146,Sony,0.15
+Software,123,Asus,0.09
+Accessories,152,Sony,0.15
+Accessories,113,Asus,0.09
+Accessories,150,Sony,0.15
+Software,124,Asus,0.09
+Printer Supplies,131,Brother,0.3
+Accessories,147,Sony,0.15
+Software,125,Asus,0.09
+Printer Supplies,130,Brother,0.3
+Accessories,114,Asus,0.09
+Accessories,153,Sony,0.15
+Accessories,115,Asus,0.09
+Accessories,110,Asus,0.09
+Accessories,154,Sony,0.15
+Accessories,112,Asus,0.09
+Accessories,148,Sony,0.15
+Accessories,119,Asus,0.09
+Accessories,145,Sony,0.15
+Accessories,111,Asus,0.09
+Accessories,144,Sony,0.15
+Accessories,116,Asus,0.09
+Accessories,117,Asus,0.09

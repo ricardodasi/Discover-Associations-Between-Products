@@ -1,6 +1,6 @@
 #load packages ----
 
-pacman::p_load(caret,mlbench,ggplot2,dplyr,arules,arulesViz,readr,tidyr,scales)
+pacman::p_load(caret,mlbench,ggplot2,dplyr,arules,arulesViz,readr,tidyr,scales,Matrix)
 
 
 #load data ----
@@ -12,6 +12,12 @@ line.item.dataset <- read.csv2('c://Users/riqui/Desktop/Ubiqum course/Project 6/
 trans <-read.transactions('c://Users/riqui/Desktop/Ubiqum course/Project 6/Discover Associations Between Products/Data Sets/trans - trans.csv', format = 'basket', sep = ',', header = F, rm.duplicates = T)
 
 trans.csv <- read.csv2('c://Users/riqui/Desktop/Ubiqum course/Project 6/Discover Associations Between Products/Data Sets/trans - trans.csv', header = F)
+
+x <- as(trans, 'matrix')
+
+x <- as.data.frame(x)
+
+table(x$`8MO0001`)
 
 #Exploring the data----
 
@@ -132,6 +138,10 @@ frequent.items <- eclat(trans,
 
 inspect(frequent.items) 
 
+#getting a plot for item frequency
+
+itemFrequencyPlot(trans, topN = 20, type = 'absolute')
+
 # Apriori processing ----
 
 
@@ -151,6 +161,9 @@ top.rules.by.support <- sort(apriori.baskets,
 
 inspect(head(top.rules.by.support, 2))
 
+#option to visualize rules directly
+
+ruleExplorer(apriori.baskets)
 
 #Top 5 rules I could get. 
 #You can select the rules like rows from a dataframe
@@ -195,14 +208,110 @@ plot(apriori.baskets[1:3],
      control = list(type='grid'))
 
 
+#Epic 3 ----
+
+#Loading the new data with categories
+
+products.with.categories <- read_table2('c:/Users/riqui/Desktop/Ubiqum course/Project 6/Discover Associations Between Products/Data Sets/products_with_category.txt')
+
+summary(products.with.categories)
 
 
+#they have a different amount of items, need to find out the difference
+
+trans.2<- read.csv2('c:/Users/riqui/Desktop/Ubiqum course/Project 6/Discover Associations Between Products/Data Sets/trans - trans.csv', sep = ',')
+
+not.in.list<- c()
+
+comparacion<-trans@itemInfo$labels %in% products.with.categories$sku
+
+faltantes <-trans@itemInfo$labels[!comparacion]
+
+faltantes.df <- cbind(faltantes,'Unknown')
+
+colnames(faltantes.df) <- c('sku', 'manual_categories')
+
+products.with.categories <- rbind(products.with.categories, faltantes.df)
+
+products.with.categories<- products.with.categories[-4230,]
 
 
+#after adding the missing values to our list of products as unknown, we are reading to
+
+#proceed with the creation of the new level for the transaction matrix. 
+
+trans@itemInfo[["category"]]<-trans@itemInfo[["labels"]]
+
+test <- trans@itemInfo[["labels"]]
+
+test <- as.data.frame(test)
+
+colnames(test) <- c('sku')
+
+test <- left_join(test,products.with.categories, by = c('sku','sku') )
 
 
+test <- test[,2]
+
+test <- as.character(test)
+
+trans@itemInfo[["category"]] <- test
+
+test.2<- trans@itemInfo[["category"]]
 
 
+new.test<- aggregate(x = trans,itemInfo(trans)[["category"]])
+
+View(new.test)
 
 
+#new apriori processing
+
+
+category.rules <- apriori(new.test,
+                           parameter = list(supp = 0.003, conf = 0.70, minlen = 2))
+
+
+inspect(category.rules)
+
+
+#loading blackwell products.
+
+blackwell.products <- read.csv('c://Users/riqui/desktop/Ubiqum course/Project 6/Discover Associations Between Products/Data Sets/Blackwell products.csv')
+
+
+#transaction rule spoint between items and accesories, however information is inconclusive
+#trying some feature engineering
+
+
+products.with.categories.2 <- as.list(trans@itemInfo[["labels"]])
+
+
+products.with.categories.2  <- as.data.frame(products.with.categories.2)
+
+product.with.categories.2$brand_category <- product.with.categories.2$`trans@itemInfo[["labels"]]`  
+
+colnames(product.with.categories.2) <- c('sku','brand_category')
+
+product.with.categories.3 <- left_join(product.with.categories.2,products.with.categories,
+                                       by = c('sku', 'sku'))
+
+product.with.categories.3$brand_category <- paste(substr(product.with.categories.3$sku, 1,3),product.with.categories.3$manual_categories, sep = ' ')
+
+
+product.with.categories.3 <- product.with.categories.3[,c(2)]
+
+trans.4 <- trans
+
+trans.4@itemInfo$category <- product.with.categories.3
+
+
+trans.5 <- aggregate(x = trans.4,itemInfo(trans.4)[["category"]])
+
+brand.category.rules <- apriori(trans.5,
+                          parameter = list(supp = 0.0001, conf = 0.10, minlen = 2))
+
+inspect(brand.category.rules)
+
+ruleExplorer(brand.category.rules)
 
